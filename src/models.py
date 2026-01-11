@@ -5,31 +5,32 @@ This module contains functions for customer segmentation using clustering
 and classification algorithms.
 
 Author: Aleksandre Chakhvashvili
-Date: 2026-01-11
 """
 
-import pandas as pd
-import numpy as np
+from typing import Any, Dict, List, Optional, Tuple
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import seaborn as sns
 from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import (
     accuracy_score,
-    confusion_matrix,
     classification_report,
+    confusion_matrix,
     precision_score,
     recall_score,
-    silhouette_score
+    silhouette_score,
 )
-from typing import Tuple, Dict, List, Optional, Any
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.tree import DecisionTreeClassifier
 
 
-def prepare_clustering_features(data: pd.DataFrame,
-                                feature_columns: List[str]) -> Tuple[pd.DataFrame, StandardScaler]:
+def prepare_clustering_features(
+    data: pd.DataFrame, feature_columns: List[str]
+) -> Tuple[pd.DataFrame, StandardScaler]:
     """
     Prepare and scale features for clustering.
 
@@ -53,8 +54,9 @@ def prepare_clustering_features(data: pd.DataFrame,
     return X_scaled_df, scaler
 
 
-def find_optimal_clusters_elbow(data: pd.DataFrame,
-                                max_k: int = 10) -> Dict[int, float]:
+def find_optimal_clusters_elbow(
+    data: pd.DataFrame, max_k: int = 10
+) -> Dict[int, float]:
     """
     Find optimal number of clusters using the Elbow method.
 
@@ -73,15 +75,16 @@ def find_optimal_clusters_elbow(data: pd.DataFrame,
     inertias = {}
 
     for k in range(1, max_k + 1):
-        kmeans = KMeans(n_clusters=k, init='k-means++', random_state=42, n_init=10)
+        kmeans = KMeans(n_clusters=k, init="k-means++", random_state=42, n_init=10)
         kmeans.fit(data)
         inertias[k] = kmeans.inertia_
 
     return inertias
 
 
-def calculate_silhouette_scores(data: pd.DataFrame,
-                                max_k: int = 10) -> Dict[int, float]:
+def calculate_silhouette_scores(
+    data: pd.DataFrame, max_k: int = 10
+) -> Dict[int, float]:
     """
     Calculate silhouette scores for different numbers of clusters.
 
@@ -100,7 +103,7 @@ def calculate_silhouette_scores(data: pd.DataFrame,
     silhouette_scores = {}
 
     for k in range(2, max_k + 1):
-        kmeans = KMeans(n_clusters=k, init='k-means++', random_state=42, n_init=10)
+        kmeans = KMeans(n_clusters=k, init="k-means++", random_state=42, n_init=10)
         cluster_labels = kmeans.fit_predict(data)
         silhouette_avg = silhouette_score(data, cluster_labels)
         silhouette_scores[k] = silhouette_avg
@@ -108,8 +111,9 @@ def calculate_silhouette_scores(data: pd.DataFrame,
     return silhouette_scores
 
 
-def plot_elbow_curve(inertias: Dict[int, float],
-                    save_path: Optional[str] = None) -> None:
+def plot_elbow_curve(
+    inertias: Dict[int, float], save_path: Optional[str] = None
+) -> None:
     """
     Plot elbow curve for K-Means clustering.
 
@@ -121,24 +125,32 @@ def plot_elbow_curve(inertias: Dict[int, float],
         Path to save the figure
     """
     plt.figure(figsize=(10, 6))
-    plt.plot(list(inertias.keys()), list(inertias.values()),
-             marker='o', linestyle='-', linewidth=2, markersize=8, color='steelblue')
+    plt.plot(
+        list(inertias.keys()),
+        list(inertias.values()),
+        marker="o",
+        linestyle="-",
+        linewidth=2,
+        markersize=8,
+        color="steelblue",
+    )
 
-    plt.xlabel('Number of Clusters (k)', fontsize=12)
-    plt.ylabel('Within-Cluster Sum of Squares (WCSS)', fontsize=12)
-    plt.title('Elbow Method for Optimal k', fontsize=14, fontweight='bold')
+    plt.xlabel("Number of Clusters (k)", fontsize=12)
+    plt.ylabel("Within-Cluster Sum of Squares (WCSS)", fontsize=12)
+    plt.title("Elbow Method for Optimal k", fontsize=14, fontweight="bold")
     plt.grid(True, alpha=0.3)
     plt.xticks(list(inertias.keys()))
 
     if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
         print(f"Elbow curve saved to: {save_path}")
 
     plt.show()
 
 
-def plot_silhouette_scores(silhouette_scores: Dict[int, float],
-                          save_path: Optional[str] = None) -> None:
+def plot_silhouette_scores(
+    silhouette_scores: Dict[int, float], save_path: Optional[str] = None
+) -> None:
     """
     Plot silhouette scores for different numbers of clusters.
 
@@ -150,25 +162,32 @@ def plot_silhouette_scores(silhouette_scores: Dict[int, float],
         Path to save the figure
     """
     plt.figure(figsize=(10, 6))
-    plt.plot(list(silhouette_scores.keys()), list(silhouette_scores.values()),
-             marker='o', linestyle='-', linewidth=2, markersize=8, color='green')
+    plt.plot(
+        list(silhouette_scores.keys()),
+        list(silhouette_scores.values()),
+        marker="o",
+        linestyle="-",
+        linewidth=2,
+        markersize=8,
+        color="green",
+    )
 
-    plt.xlabel('Number of Clusters (k)', fontsize=12)
-    plt.ylabel('Silhouette Score', fontsize=12)
-    plt.title('Silhouette Score for Different k Values', fontsize=14, fontweight='bold')
+    plt.xlabel("Number of Clusters (k)", fontsize=12)
+    plt.ylabel("Silhouette Score", fontsize=12)
+    plt.title("Silhouette Score for Different k Values", fontsize=14, fontweight="bold")
     plt.grid(True, alpha=0.3)
     plt.xticks(list(silhouette_scores.keys()))
 
     if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
         print(f"Silhouette scores plot saved to: {save_path}")
 
     plt.show()
 
 
-def train_kmeans(data: pd.DataFrame,
-                n_clusters: int,
-                random_state: int = 42) -> Tuple[KMeans, np.ndarray]:
+def train_kmeans(
+    data: pd.DataFrame, n_clusters: int, random_state: int = 42
+) -> Tuple[KMeans, np.ndarray]:
     """
     Train K-Means clustering model.
 
@@ -186,8 +205,9 @@ def train_kmeans(data: pd.DataFrame,
     Tuple[KMeans, np.ndarray]
         Trained KMeans model and cluster labels
     """
-    kmeans = KMeans(n_clusters=n_clusters, init='k-means++',
-                   random_state=random_state, n_init=10)
+    kmeans = KMeans(
+        n_clusters=n_clusters, init="k-means++", random_state=random_state, n_init=10
+    )
     cluster_labels = kmeans.fit_predict(data)
 
     print(f"K-Means clustering completed with {n_clusters} clusters.")
@@ -200,12 +220,14 @@ def train_kmeans(data: pd.DataFrame,
     return kmeans, cluster_labels
 
 
-def visualize_clusters_2d(data_original: pd.DataFrame,
-                          cluster_labels: np.ndarray,
-                          x_col: str,
-                          y_col: str,
-                          title: Optional[str] = None,
-                          save_path: Optional[str] = None) -> None:
+def visualize_clusters_2d(
+    data_original: pd.DataFrame,
+    cluster_labels: np.ndarray,
+    x_col: str,
+    y_col: str,
+    title: Optional[str] = None,
+    save_path: Optional[str] = None,
+) -> None:
     """
     Visualize clusters in 2D space.
 
@@ -228,35 +250,45 @@ def visualize_clusters_2d(data_original: pd.DataFrame,
 
     # Create a copy with cluster labels
     plot_data = data_original.copy()
-    plot_data['Cluster'] = cluster_labels
+    plot_data["Cluster"] = cluster_labels
 
     # Plot each cluster
-    unique_clusters = sorted(plot_data['Cluster'].unique())
-    colors = sns.color_palette('Set2', len(unique_clusters))
+    unique_clusters = sorted(plot_data["Cluster"].unique())
+    colors = sns.color_palette("Set2", len(unique_clusters))
 
     for idx, cluster in enumerate(unique_clusters):
-        cluster_data = plot_data[plot_data['Cluster'] == cluster]
-        plt.scatter(cluster_data[x_col], cluster_data[y_col],
-                   s=100, alpha=0.7, c=[colors[idx]], label=f'Cluster {cluster}',
-                   edgecolor='black', linewidth=0.5)
+        cluster_data = plot_data[plot_data["Cluster"] == cluster]
+        plt.scatter(
+            cluster_data[x_col],
+            cluster_data[y_col],
+            s=100,
+            alpha=0.7,
+            c=[colors[idx]],
+            label=f"Cluster {cluster}",
+            edgecolor="black",
+            linewidth=0.5,
+        )
 
     plt.xlabel(x_col, fontsize=12)
     plt.ylabel(y_col, fontsize=12)
-    plt.title(title or f'Customer Segments - {y_col} vs {x_col}',
-             fontsize=14, fontweight='bold')
+    plt.title(
+        title or f"Customer Segments - {y_col} vs {x_col}",
+        fontsize=14,
+        fontweight="bold",
+    )
     plt.legend(fontsize=11)
     plt.grid(True, alpha=0.3)
 
     if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
         print(f"Cluster visualization saved to: {save_path}")
 
     plt.show()
 
 
-def analyze_clusters(data_original: pd.DataFrame,
-                    cluster_labels: np.ndarray,
-                    feature_columns: List[str]) -> pd.DataFrame:
+def analyze_clusters(
+    data_original: pd.DataFrame, cluster_labels: np.ndarray, feature_columns: List[str]
+) -> pd.DataFrame:
     """
     Analyze cluster characteristics.
 
@@ -275,18 +307,21 @@ def analyze_clusters(data_original: pd.DataFrame,
         Cluster analysis summary
     """
     analysis_data = data_original.copy()
-    analysis_data['Cluster'] = cluster_labels
+    analysis_data["Cluster"] = cluster_labels
 
     # Calculate statistics for each cluster
-    cluster_summary = analysis_data.groupby('Cluster')[feature_columns].agg([
-        'count', 'mean', 'median', 'std', 'min', 'max'
-    ]).round(2)
+    cluster_summary = (
+        analysis_data.groupby("Cluster")[feature_columns]
+        .agg(["count", "mean", "median", "std", "min", "max"])
+        .round(2)
+    )
 
     return cluster_summary
 
 
-def describe_clusters(data_original: pd.DataFrame,
-                     cluster_labels: np.ndarray) -> Dict[int, str]:
+def describe_clusters(
+    data_original: pd.DataFrame, cluster_labels: np.ndarray
+) -> Dict[int, str]:
     """
     Generate descriptive names/characteristics for each cluster.
 
@@ -303,15 +338,15 @@ def describe_clusters(data_original: pd.DataFrame,
         Dictionary mapping cluster number to description
     """
     analysis_data = data_original.copy()
-    analysis_data['Cluster'] = cluster_labels
+    analysis_data["Cluster"] = cluster_labels
 
     cluster_descriptions = {}
 
-    for cluster in sorted(analysis_data['Cluster'].unique()):
-        cluster_data = analysis_data[analysis_data['Cluster'] == cluster]
+    for cluster in sorted(analysis_data["Cluster"].unique()):
+        cluster_data = analysis_data[analysis_data["Cluster"] == cluster]
 
-        avg_income = cluster_data['Annual Income (k$)'].mean()
-        avg_spending = cluster_data['Spending Score (1-100)'].mean()
+        avg_income = cluster_data["Annual Income (k$)"].mean()
+        avg_spending = cluster_data["Spending Score (1-100)"].mean()
         size = len(cluster_data)
 
         # Classify income level
@@ -336,11 +371,13 @@ def describe_clusters(data_original: pd.DataFrame,
     return cluster_descriptions
 
 
-def prepare_classification_data(data: pd.DataFrame,
-                               feature_columns: List[str],
-                               target_column: str,
-                               test_size: float = 0.2,
-                               random_state: int = 42) -> Tuple:
+def prepare_classification_data(
+    data: pd.DataFrame,
+    feature_columns: List[str],
+    target_column: str,
+    test_size: float = 0.2,
+    random_state: int = 42,
+) -> Tuple:
     """
     Prepare data for classification.
 
@@ -371,14 +408,16 @@ def prepare_classification_data(data: pd.DataFrame,
 
     print(f"Training set size: {len(X_train)}")
     print(f"Test set size: {len(X_test)}")
-    print(f"Target distribution in training set:\n{y_train.value_counts().sort_index()}")
+    print(
+        f"Target distribution in training set:\n{y_train.value_counts().sort_index()}"
+    )
 
     return X_train, X_test, y_train, y_test
 
 
-def train_logistic_regression(X_train: pd.DataFrame,
-                              y_train: pd.Series,
-                              random_state: int = 42) -> LogisticRegression:
+def train_logistic_regression(
+    X_train: pd.DataFrame, y_train: pd.Series, random_state: int = 42
+) -> LogisticRegression:
     """
     Train Logistic Regression classifier.
 
@@ -403,9 +442,9 @@ def train_logistic_regression(X_train: pd.DataFrame,
     return model
 
 
-def train_decision_tree(X_train: pd.DataFrame,
-                       y_train: pd.Series,
-                       random_state: int = 42) -> DecisionTreeClassifier:
+def train_decision_tree(
+    X_train: pd.DataFrame, y_train: pd.Series, random_state: int = 42
+) -> DecisionTreeClassifier:
     """
     Train Decision Tree classifier.
 
@@ -430,10 +469,9 @@ def train_decision_tree(X_train: pd.DataFrame,
     return model
 
 
-def evaluate_classifier(model: Any,
-                       X_test: pd.DataFrame,
-                       y_test: pd.Series,
-                       model_name: str = "Model") -> Dict[str, Any]:
+def evaluate_classifier(
+    model: Any, X_test: pd.DataFrame, y_test: pd.Series, model_name: str = "Model"
+) -> Dict[str, Any]:
     """
     Evaluate classification model.
 
@@ -456,8 +494,8 @@ def evaluate_classifier(model: Any,
     y_pred = model.predict(X_test)
 
     accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred, average='weighted')
-    recall = recall_score(y_test, y_pred, average='weighted')
+    precision = precision_score(y_test, y_pred, average="weighted")
+    recall = recall_score(y_test, y_pred, average="weighted")
     conf_matrix = confusion_matrix(y_test, y_pred)
 
     print(f"\n{model_name} Evaluation Results:")
@@ -469,17 +507,17 @@ def evaluate_classifier(model: Any,
     print(f"\nClassification Report:\n{classification_report(y_test, y_pred)}")
 
     return {
-        'accuracy': accuracy,
-        'precision': precision,
-        'recall': recall,
-        'confusion_matrix': conf_matrix,
-        'predictions': y_pred
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "confusion_matrix": conf_matrix,
+        "predictions": y_pred,
     }
 
 
-def plot_confusion_matrix(conf_matrix: np.ndarray,
-                         model_name: str,
-                         save_path: Optional[str] = None) -> None:
+def plot_confusion_matrix(
+    conf_matrix: np.ndarray, model_name: str, save_path: Optional[str] = None
+) -> None:
     """
     Plot confusion matrix heatmap.
 
@@ -493,15 +531,21 @@ def plot_confusion_matrix(conf_matrix: np.ndarray,
         Path to save the figure
     """
     plt.figure(figsize=(8, 6))
-    sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
-               square=True, cbar_kws={"shrink": 0.8})
+    sns.heatmap(
+        conf_matrix,
+        annot=True,
+        fmt="d",
+        cmap="Blues",
+        square=True,
+        cbar_kws={"shrink": 0.8},
+    )
 
-    plt.xlabel('Predicted Label', fontsize=12)
-    plt.ylabel('True Label', fontsize=12)
-    plt.title(f'Confusion Matrix - {model_name}', fontsize=14, fontweight='bold')
+    plt.xlabel("Predicted Label", fontsize=12)
+    plt.ylabel("True Label", fontsize=12)
+    plt.title(f"Confusion Matrix - {model_name}", fontsize=14, fontweight="bold")
 
     if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
         print(f"Confusion matrix saved to: {save_path}")
 
     plt.show()
@@ -524,12 +568,14 @@ def compare_models(results: Dict[str, Dict[str, Any]]) -> pd.DataFrame:
     comparison_data = []
 
     for model_name, metrics in results.items():
-        comparison_data.append({
-            'Model': model_name,
-            'Accuracy': metrics['accuracy'],
-            'Precision': metrics['precision'],
-            'Recall': metrics['recall']
-        })
+        comparison_data.append(
+            {
+                "Model": model_name,
+                "Accuracy": metrics["accuracy"],
+                "Precision": metrics["precision"],
+                "Recall": metrics["recall"],
+            }
+        )
 
     comparison_df = pd.DataFrame(comparison_data)
     comparison_df = comparison_df.round(4)
