@@ -1,0 +1,87 @@
+EXPLORATORY DATA ANALYSIS SUMMARY REPORT
+================================================================================
+
+1. DATASET OVERVIEW
+--------------------------------------------------------------------------------
+Total Records: 200
+Total Features: 9
+
+2. STATISTICAL SUMMARY
+--------------------------------------------------------------------------------
+                         Mean  Median    Std  Min  Max     Q1    Q3    IQR  Skewness  Kurtosis
+Age                     38.85    36.0  13.97   18   70  28.75  49.0  20.25      0.49     -0.67
+Annual Income (k$)      60.56    61.5  26.26   15  137  41.50  78.0  36.50      0.32     -0.10
+Spending Score (1-100)  50.20    50.0  25.82    1   99  34.75  73.0  38.25     -0.05     -0.83
+
+3. CORRELATION ANALYSIS
+--------------------------------------------------------------------------------
+                         Age  Annual Income (k$)  Spending Score (1-100)  Gender_Encoded
+Age                     1.00           -1.24e-02               -3.27e-01            0.06
+Annual Income (k$)     -0.01            1.00e+00                9.90e-03            0.06
+Spending Score (1-100) -0.33            9.90e-03                1.00e+00           -0.06
+Gender_Encoded          0.06            5.64e-02               -5.81e-02            1.00
+
+4. CATEGORICAL DISTRIBUTIONS
+--------------------------------------------------------------------------------
+Gender Distribution:
+Gender
+Female    112
+Male       88
+
+Age Group Distribution:
+Age_Group
+Middle-Aged (36-50)    62
+Adult (26-35)          60
+Senior (50+)           40
+Young (18-25)          38
+
+Income Category Distribution:
+Income_Category
+Medium Income (40-70k)      76
+High Income (70-100k)       60
+Low Income (<40k)           50
+Very High Income (>100k)    14
+
+Spending Category Distribution:
+Spending_Category
+Medium Spender    87
+High Spender      58
+Low Spender       55
+
+5. GROUP STATISTICS
+--------------------------------------------------------------------------------
+Average by Gender:
+          Age  Annual Income (k$)  Spending Score (1-100)
+Gender                                                   
+Female  38.10               59.25                   51.53
+Male    39.81               62.23                   48.51
+
+Average by Age Group:
+                       Age  Annual Income (k$)  Spending Score (1-100)
+Age_Group                                                             
+Adult (26-35)        31.08               68.15                   64.45
+Middle-Aged (36-50)  43.27               66.66                   41.71
+Senior (50+)         60.45               53.85                   37.48
+Young (18-25)        21.16               45.68                   54.95
+
+Average by Income Category:
+                            Age  Annual Income (k$)  Spending Score (1-100)
+Income_Category                                                            
+High Income (70-100k)     36.67               81.10                   50.52
+Low Income (<40k)         35.28               27.40                   49.48
+Medium Income (40-70k)    43.28               56.18                   50.68
+Very High Income (>100k)  36.93              114.71                   48.79
+
+Average by Spending Category:
+                     Age  Annual Income (k$)  Spending Score (1-100)
+Spending_Category                                                   
+High Spender       30.00               65.29                   82.07
+Low Spender        42.91               65.24                   17.44
+Medium Spender     42.18               54.45                   49.67
+
+6. VISUALIZATIONS CREATED
+--------------------------------------------------------------------------------
+Total visualizations: 19
+Types: Distribution plots, Box plots, Correlation heatmap, 
+       Scatter plots, Bar charts, Pair plots, Violin plots, Pie charts
+All figures saved to: reports/figures/

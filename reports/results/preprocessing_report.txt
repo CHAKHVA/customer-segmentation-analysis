@@ -1,0 +1,73 @@
+DATA PREPROCESSING REPORT
+================================================================================
+
+1. OVERVIEW
+--------------------------------------------------------------------------------
+Original Shape: (200, 5)
+Processed Shape: (200, 9)
+Rows Removed: 0
+Features Added: 4
+
+2. PREPROCESSING STEPS
+--------------------------------------------------------------------------------
+- Checked for missing values: None found
+- Removed duplicate rows: 0 duplicates found
+- Outlier handling: Kept all outliers (valid customer segments)
+- Feature engineering: Created derived categorical features
+
+3. NEW FEATURES CREATED
+--------------------------------------------------------------------------------
+  - Age_Group
+  - Income_Category
+  - Spending_Category
+  - Gender_Encoded
+
+4. FEATURE DESCRIPTIONS
+--------------------------------------------------------------------------------
+Age_Group: Categorical age ranges
+  - Young (18-25)
+  - Adult (26-35)
+  - Middle-Aged (36-50)
+  - Senior (50+)
+
+Income_Category: Annual income ranges
+  - Low Income (<40k)
+  - Medium Income (40-70k)
+  - High Income (70-100k)
+  - Very High Income (>100k)
+
+Spending_Category: Spending score ranges
+  - Low Spender (1-35)
+  - Medium Spender (36-65)
+  - High Spender (66-100)
+
+Gender_Encoded: Numerical encoding of gender
+  - Male = 1
+  - Female = 0
+
+5. OUTLIER ANALYSIS
+--------------------------------------------------------------------------------
+
+Age:
+  Lower Bound: -1.62
+  Upper Bound: 79.38
+  Outlier Count: 0
+  Outlier Percentage: 0.00%
+
+Annual Income (k$):
+  Lower Bound: -13.25
+  Upper Bound: 132.75
+  Outlier Count: 2
+  Outlier Percentage: 1.00%
+
+Spending Score (1-100):
+  Lower Bound: -22.62
+  Upper Bound: 130.38
+  Outlier Count: 0
+  Outlier Percentage: 0.00%
+
+6. DATA QUALITY DECISIONS
+--------------------------------------------------------------------------------
+Outliers: KEPT - They represent valid customer segments
+Duplicates: REMOVED - Ensured data uniqueness
+Missing Values: N/A - No missing values found

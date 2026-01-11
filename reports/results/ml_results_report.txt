@@ -1,0 +1,65 @@
+MACHINE LEARNING RESULTS REPORT
+================================================================================
+
+1. K-MEANS CLUSTERING
+--------------------------------------------------------------------------------
+Features Used: Annual Income (k$), Spending Score (1-100)
+Optimal Number of Clusters: 5
+Silhouette Score: 0.5547
+WCSS (Inertia): 65.57
+
+Cluster Descriptions:
+  Cluster 0: Medium Income, Medium Spender (n=81)
+  Cluster 1: High Income, High Spender (n=39)
+  Cluster 2: Low Income, High Spender (n=22)
+  Cluster 3: High Income, Low Spender (n=35)
+  Cluster 4: Low Income, Low Spender (n=23)
+
+Cluster Statistics:
+        Annual Income (k$)                               Spending Score (1-100)                             
+                     count   mean median    std min  max                  count   mean median    std min max
+Cluster                                                                                                     
+0                       81  55.30   54.0   8.99  39   76                     81  49.52   50.0   6.53  34  61
+1                       39  86.54   79.0  16.31  69  137                     39  82.13   83.0   9.36  63  97
+2                       22  25.73   24.5   7.57  15   39                     22  79.36   77.0  10.50  61  99
+3                       35  88.20   85.0  16.40  70  137                     35  17.11   16.0   9.95   1  39
+4                       23  26.30   25.0   7.89  15   39                     23  20.91   17.0  13.02   3  40
+
+2. CLASSIFICATION MODELS
+--------------------------------------------------------------------------------
+Features Used: Age, Annual Income (k$), Spending Score (1-100), Gender_Encoded
+Target Variable: Cluster labels from K-Means
+Train/Test Split: 80/20
+
+Model Performance Comparison:
+              Model  Accuracy  Precision  Recall
+Logistic Regression     0.975     0.9765   0.975
+      Decision Tree     0.950     0.9556   0.950
+
+Best Model: Logistic Regression
+Best Accuracy: 0.9750
+
+3. DETAILED EVALUATION METRICS
+--------------------------------------------------------------------------------
+
+Logistic Regression:
+  Accuracy: 0.9750
+  Precision: 0.9765
+  Recall: 0.9750
+  Confusion Matrix:
+[[16  0  0  0  0]
+ [ 0  8  0  0  0]
+ [ 1  0  3  0  0]
+ [ 0  0  0  7  0]
+ [ 0  0  0  0  5]]
+
+Decision Tree:
+  Accuracy: 0.9500
+  Precision: 0.9556
+  Recall: 0.9500
+  Confusion Matrix:
+[[16  0  0  0  0]
+ [ 1  7  0  0  0]
+ [ 0  0  3  0  1]
+ [ 0  0  0  7  0]
+ [ 0  0  0  0  5]]
